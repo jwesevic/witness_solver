@@ -1,0 +1,51 @@
+{
+    "size" : [6,5],
+    "starts" : [[3,0]],
+    "ends" : [[3,5]],
+    "hexagons" : {"corners" : [], "hedges" : [], "vedges" : []},
+    "breaks" : {"h" : [], "v" : []},
+    "grid" : [
+                [
+                    {"component" : "star", "color" : "blue", "count" : 1},
+                    {"component" : "", "color" : "white", "count" : 1},
+                    {"component" : "", "color" : "white", "count" : 1},
+                    {"component" : "", "color" : "white", "count" : 1},
+                    {"component" : "star", "color" : "red", "count" : 1}
+                ],
+                [
+                    {"component" : "", "color" : "white", "count" : 1},
+                    {"component" : "square", "color" : "red", "count" : 1},
+                    {"component" : "square", "color" : "blue", "count" : 1},
+                    {"component" : "", "color" : "white", "count" : 1},
+                    {"component" : "", "color" : "white", "count" : 1}
+                ],
+                [
+                    {"component" : "square", "color" : "blue", "count" : 1},
+                    {"component" : "", "color" : "white", "count" : 1},
+                    {"component" : "", "color" : "white", "count" : 1},
+                    {"component" : "", "color" : "white", "count" : 1},
+                    {"component" : "square", "color" : "blue", "count" : 1}
+                ],
+                [
+                    {"component" : "", "color" : "white", "count" : 1},
+                    {"component" : "", "color" : "white", "count" : 1},
+                    {"component" : "", "color" : "white", "count" : 1},
+                    {"component" : "", "color" : "white", "count" : 1},
+                    {"component" : "", "color" : "white", "count" : 1}
+                ],
+                [
+                    {"component" : "", "color" : "white", "count" : 1},
+                    {"component" : "square", "color" : "blue", "count" : 1},
+                    {"component" : "", "color" : "white", "count" : 1},
+                    {"component" : "square", "color" : "red", "count" : 1},
+                    {"component" : "", "color" : "white", "count" : 1}
+                ],
+                [
+                    {"component" : "star", "color" : "red", "count" : 1},
+                    {"component" : "", "color" : "white", "count" : 1},
+                    {"component" : "square", "color" : "red", "count" : 1},
+                    {"component" : "", "color" : "white", "count" : 1},
+                    {"component" : "star", "color" : "blue", "count" : 1}
+                ]
+            ]
+}

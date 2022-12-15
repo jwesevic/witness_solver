@@ -2,6 +2,19 @@ import subprocess
 import json
 import sys
 
+COLORS={
+            "white" : 0,
+            "black" : 1,
+            "cyan" : 2,
+            "magenta" : 3,
+            "yellow" : 4,
+            "red" : 5,
+            "green" : 6,
+            "blue" : 7,
+            "orange" : 8
+        }
+NUM_COLORS=9
+
 def readdata(filename):
     with open(filename) as f:
         data=json.load(f)
@@ -184,9 +197,24 @@ def createLP(data,filename):
                             lp.write(f"\t+ y.{i}.{j}.{k}.{l} - y.{i}.{j}.{k}.{l+1} + y.{k}.{l}.{k}.{l+1} <= 1\n")
                             lp.write(f"\t- y.{i}.{j}.{k}.{l} + y.{i}.{j}.{k}.{l+1} + y.{k}.{l}.{k}.{l+1} <= 1\n\n")
         
+        lp.write("\n\t\\symmetry of connectedness\n")
+        for i in range(rows):
+            for j in range(cols):
+                for l in range(j+1,cols):               #parse to end of current row
+                    lp.write(f"\ty.{i}.{j}.{i}.{l} - y.{i}.{l}.{i}.{j} = 0\n")
+                for k in range(i+1,rows):               #parse all columns starting w next row
+                    for l in range(cols):
+                        lp.write(f"\ty.{i}.{j}.{k}.{l} - y.{k}.{l}.{i}.{j} = 0\n")
+
+        lp.write("\n\t\\reflexivity of connectedness\n")
+        for i in range(rows):
+            for j in range(cols):
+                lp.write(f"\ty.{i}.{j}.{i}.{j} = 1\n")
+
 
         #puzzle constraints!!!
 
+        #hexagons and breaks
         lp.write(f"\n\t\\corner hexagon constriants\n")
         for hex in data["hexagons"]["corners"]:
             lp.write(f"\t z.{hex[0]}.{hex[1]} = 1\n")
@@ -198,18 +226,60 @@ def createLP(data,filename):
             lp.write(f"\tx.{hex[0]}.{hex[1]}.v = 1\n")
 
         lp.write(f"\n\t\\break constraints\n")
-        for cut in data["breaks"]:
-            lp.write(f"\t x.{cut[0]}.{cut[1]}.{cut[2]} = 0\n")
+        for cut in data["breaks"]["h"]:
+            lp.write(f"\tx.{cut[0]}.{cut[1]}.h = 0\n")
+        for cut in data["breaks"]["v"]:
+            lp.write(f"\tx.{cut[0]}.{cut[1]}.v = 0\n")
 
+        #triangles
         lp.write(f"\n\t\\triangle constraints\n")
         i=0
         for row in data["grid"]:
             j=0
             for cell in row:
                 if cell["component"]=="triangle":
-                    lp.write(f"\t x.{i}.{j}.h + x.{i}.{j}.v + x.{i+1}.{j}.h + x.{i}.{j+1}.v = {cell['count']}\n")    
+                    lp.write(f"\tx.{i}.{j}.h + x.{i}.{j}.v + x.{i+1}.{j}.h + x.{i}.{j+1}.v = {cell['count']}\n")    
                 j+=1
             i+=1
+
+        #squares
+        lp.write(f"\n\t\\square constraints\n")
+        squares=[]
+        i=0
+        for row in data["grid"]:
+            j=0
+            for cell in row:
+                if cell["component"]=="square":
+                    squares.append([i,j,COLORS[cell["color"]]])             #add triple (i,j,color) to squares
+                j+=1
+            i+=1
+        print(squares)
+
+        for i in range(len(squares)):               #pick all pairs of squares 
+            for j in range(i+1,len(squares)):
+                lp.write(f"\t{NUM_COLORS} y.{squares[i][0]}.{squares[i][1]}.{squares[j][0]}.{squares[j][1]} <= {NUM_COLORS-squares[i][2]+squares[j][2]}\n")
+                lp.write(f"\t{NUM_COLORS} y.{squares[i][0]}.{squares[i][1]}.{squares[j][0]}.{squares[j][1]} <= {NUM_COLORS+squares[i][2]-squares[j][2]}\n")
+
+        #stars
+        lp.write(f"\n\t\\star constraints\n")
+        colorSets=[[] for i in range(NUM_COLORS)]
+        stars=[]
+        i=0
+        for row in data["grid"]:
+            j=0
+            for cell in row:
+                if cell["component"]:           #blank string indicates no component
+                    colorSets[COLORS[cell["color"]]].append([i,j])        #if an element [i,j] has color k, then [i,j] will be put in color set k.
+                    if cell["component"]=="star":
+                        stars.append([i,j,COLORS[cell["color"]]])         #if the component is a star, also add index and color to stars.
+                j+=1
+            i+=1
+
+        for star in stars:
+            lp.write("\t")
+            for elt in colorSets[star[2]]:
+                lp.write(f"+ y.{star[0]}.{star[1]}.{elt[0]}.{elt[1]} ")
+            lp.write("= 2\n")
 
 
         #stating all variants are binary
@@ -225,9 +295,7 @@ def createLP(data,filename):
         lp.write("\n\n\t\\connectedness variables\n\t")
         for i in range(rows):
             for j in range(cols):
-                for l in range(j+1,cols):
-                    lp.write(f"y.{i}.{j}.{i}.{l} ")
-                for k in range(i+1,rows):
+                for k in range(rows):
                     for l in range(cols):
                         lp.write(f"y.{i}.{j}.{k}.{l} ")
         lp.write("\n\n\t\\point use variables\n\t")
@@ -305,7 +373,7 @@ def printAll(lines, rows, cols, outfile):
                     found+=1
             if found>1:
                     print(f"point {p} was found in multiple components. model must be examined.")
-                    exit(1)
+                    #exit(1)
             if found==0:
                 components.append([p])
 

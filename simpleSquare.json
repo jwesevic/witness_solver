@@ -1,0 +1,15 @@
+{
+    "size" : [2,1],
+    "starts" : [[2,0]],
+    "ends" : [[0,1]],
+    "hexagons" : {"corners" : [], "hedges" : [], "vedges" : []},
+    "breaks" : {"h" : [], "v" : []},
+    "grid" : [
+                [
+                    {"component" : "square", "color" : "white", "count" : 1}
+                ],
+                [
+                    {"component" : "square", "color" : "black", "count" : 1}
+                ]
+            ]
+}

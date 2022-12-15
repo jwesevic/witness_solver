@@ -3,7 +3,7 @@
     "starts" : [],
     "ends" : [],
     "hexagons" : {"corners" : [], "hedges" : [], "vedges" : []},
-    "breaks" : [],
+    "breaks" : {"h" : [], "v" : []},
     "grid" : [
                 [
                     {"component" : "", "color" : "", "count" : 0}

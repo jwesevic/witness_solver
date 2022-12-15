@@ -109,7 +109,6 @@ def printComponents(lines, rows, cols):
                     found+=1
             if found>1:
                     print(f"point {p} was found in multiple components. model must be examined.")
-                    exit(1)
             if found==0:
                 components.append([p])
   
@@ -157,7 +156,6 @@ def printAll(lines, rows, cols):
                     found+=1
             if found>1:
                     print(f"point {p} was found in multiple components. model must be examined.")
-                    exit(1)
             if found==0:
                 components.append([p])
 
@@ -196,7 +194,7 @@ def printAll(lines, rows, cols):
                 variantInfo=line.split(" ")[0].split(".")
                 puzzleSol[2*int(variantInfo[1])][3*int(variantInfo[2])]="e"
 
-    with open("solution.txt","w") as sol:
+    with open("tempSol.txt","w") as sol:
         for row in puzzleSol:
             for character in row:
                 sol.write(character)
