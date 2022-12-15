@@ -1,0 +1,28 @@
+puzzles are written in JSON 
+
+size key is an array where the first elt is the height (number of rows) and the second elt is the width (number of columns)
+starts key is an array of points (which themselves are arrays) at which we can start
+ends key is an array of points (whichthemselves are arrays) at when we can ends
+hexagons is an dictionary with 2 keys:
+    corners key is an array of points at which there are hexes
+    edges key is an array of points+directions which represent edges which have hexes
+breaks is an array of points+directions which represent edges which have breaks
+grid is a n by m nested array where each entry is a dictionary with 1 key
+    compenent key is blank if there is no puzzle component at that location, and a dictionary if there is
+        subdictionary contains 3 keys:
+            type key tells us what type of component it is
+            color key tells us what color it is
+            number key tells us what number it is (when applicable)
+
+
+
+
+
+{
+    "size" : [n,m],
+    "starts" : [[s1x,s1y],[s2x,s2y],...],
+    "ends" : [[e1x,e1y],[e2x,e2y],...],
+    "hexagons" : {"corners" : [[c1x,c1y],[c2x,c2y],...], "edges" : [[h1x,h1y,dir1],[h2x,h2y,dir2]...]},
+    "breaks" : [[b1x,b1y,dir1],[b2x,b2y,dir1],...],
+    "grid": [[{"component" : {"type" : "square", "color" : "white", "number" : 6}},...], ....]
+}

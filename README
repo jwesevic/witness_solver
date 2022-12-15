@@ -1,0 +1,16 @@
+Requires a valid installation of Gurobi to run.
+
+Usage: run witnessSolver using python.  
+    There are two arguments: 
+        (required) the first is a path to a .json file which represents a puzzle (no validity checking is done on the puzzle)
+        (optional) the second is the name of the file where output will be written.
+    output consists of a .txt file which contains a graphical representation of the path taken, along with all nodes used along the way
+        and connected component data.  NOTE: connected component data may not be accurate in all cases right now!  inclusion should
+        always be correct but exclusion may not be!
+
+example usage:
+
+py .\witnessSolver.py .\cell_block.json cell_block.txt
+
+will run witnessSolver on the puzzle represented by cell_block.json, then write output to cell_block.txt.
+

@@ -1,0 +1,12 @@
+{
+    "size" : [],
+    "starts" : [],
+    "ends" : [],
+    "hexagons" : {"corners" : [], "hedges" : [], "vedges" : []},
+    "breaks" : [],
+    "grid" : [
+                [
+                    {"component" : "", "color" : "", "count" : 0}
+                ]
+            ]
+}
